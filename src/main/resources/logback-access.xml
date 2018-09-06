@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator>
+                <!-- ch.qos.logback.access.boolex.JaninoEventEvaluator -->
+                <expression>return event.getRequest().getRequestURI().contains("/healthcheck");</expression>
+            </evaluator>
+            <onMatch>DENY</onMatch>
+            <OnMismatch>NEUTRAL</OnMismatch>
+        </filter>
+        <encoder>
+            <!-- 参考格式设置：https://logback.qos.ch/xref/ch/qos/logback/access/PatternLayout.html -->
+            <Pattern>%h %l %u [%t] "%r" %s %b %D "%i{Referer}" "%i{User-Agent}" "%i{Cookie}"</Pattern>
+            <!--<Pattern>combined</Pattern>-->
+            <!--<Pattern>%fullRequest%n%n%fullResponse</Pattern>-->
+        </encoder>
+    </appender>
+
+    <appender-ref ref="STDOUT" />
+</configuration>
